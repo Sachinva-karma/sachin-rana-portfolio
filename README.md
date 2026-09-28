@@ -28,7 +28,7 @@ Built as a cinematic, single-page WebGL experience featuring an interactive 3D p
 ## 📂 Project Structure
 
 ```
-├── 3d.html                  # Main portfolio (single HTML file with embedded CSS/JS)
+├── index.html               # Main portfolio (single HTML file with embedded CSS/JS)
 ├── textures.js              # Base64-encoded portrait textures (B&W + color)
 ├── sach-modified.jpeg       # About section portrait image
 ├── rana_mod2.png             # B&W portrait source (for texture generation)
@@ -65,14 +65,14 @@ This is a static single-page site. No build step or npm required.
 
 ### Run locally
 
-Simply open `3d.html` in a modern browser:
+Simply open `index.html` in a modern browser:
 
 ```bash
 # macOS
-open 3d.html
+open index.html
 
 # Linux
-xdg-open 3d.html
+xdg-open index.html
 
 # Or use any local server, e.g.:
 npx serve .

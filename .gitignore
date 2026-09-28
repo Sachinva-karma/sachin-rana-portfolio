@@ -1,0 +1,62 @@
+# ===========================
+# OS-generated files
+# ===========================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ===========================
+# IDE & Editor files
+# ===========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ===========================
+# Environment files
+# ===========================
+.env
+.env.*
+!.env.example
+
+# ===========================
+# Node.js (if future migration)
+# ===========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# ===========================
+# Build output
+# ===========================
+dist/
+build/
+.next/
+out/
+.cache/
+
+# ===========================
+# Logs
+# ===========================
+*.log
+
+# ===========================
+# Coverage
+# ===========================
+coverage/
+
+# ===========================
+# Unused source assets
+# ===========================
+# Original high-res portraits used only for texture generation
+# (the generated textures.js is committed instead)
+sach-Picsart-AiImageEnhancer.jpeg

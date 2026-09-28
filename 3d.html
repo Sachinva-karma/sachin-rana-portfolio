@@ -1,0 +1,2641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sachin Rana | Interactive Digital Art Portfolio</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500&family=Outfit:wght@800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+    </script>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #111111;
+            --accent-color: #ff2d20; /* Editorial Red Accent */
+            --accent-glow: rgba(255, 45, 32, 0.15);
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Space Grotesk', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            cursor: none; /* Hide default cursor for custom cursor experience */
+        }
+
+        /* Lenis smooth scrolling reset */
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        .cursor-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+        .cursor-ring {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 1px solid rgba(255, 45, 32, 0.45);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            box-shadow: inset 0 0 5px rgba(255, 45, 32, 0.05);
+        }
+        .char, .word {
+            display: inline-block;
+        }
+
+        /* --- NAVIGATION --- */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem 5vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            pointer-events: auto;
+        }
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.8rem;
+            font-family: var(--font-body);
+            font-weight: 500;
+            color: #333;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            font-family: var(--font-body);
+            position: relative;
+            padding: 0.2rem 0;
+            display: flex;
+            align-items: center;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0%;
+            height: 1.5px;
+            background-color: var(--text-color);
+            transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), left 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        .nav-cta {
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #111111;
+            padding: 0.75rem 1.6rem;
+            border-radius: 50px;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s, box-shadow 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .nav-cta:hover {
+            background-color: var(--accent-color);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 45, 32, 0.25);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* WebGL Background Canvas */
+        canvas#webgl-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2; /* Sits on top of background & typography */
+            pointer-events: none;
+        }
+
+        /* Canvas specifically for Background shader */
+        canvas#bg-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Hero Name Heading (Sandwiched behind portrait) */
+        .hero-name-heading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 11vw, 13rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            white-space: nowrap;
+            z-index: 1; /* Layer 2: Sandwiched! */
+            pointer-events: none;
+            user-select: none;
+            gap: 0;
+            letter-spacing: 0.08em;
+            height: 70%;
+        }
+        .hero-name-heading .fill {
+            color: var(--text-color);
+            pointer-events: auto;
+            align-self: flex-end;
+            padding-right: 4vw;
+        }
+        .hero-name-heading .outline {
+            color: #d8d8d8;
+            pointer-events: auto;
+            cursor: pointer;
+            align-self: flex-start;
+            padding-left: 4vw;
+        }
+        .hero-name-heading .outline .char {
+            color: #d8d8d8;
+            -webkit-text-stroke: none;
+            transition: color 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+                        -webkit-text-stroke 0.4s ease, 
+                        transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+                        -webkit-text-fill-color 0.4s ease;
+            display: inline-block;
+        }
+        .hero-name-heading .outline:hover .char {
+            background: linear-gradient(135deg, #ff2d20 0%, #ff6b4a 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -webkit-text-stroke: 1.5px transparent;
+            transform: translateY(-8px) scale(1.03);
+        }
+        .hero-name-heading .outline .char:nth-child(1) { transition-delay: 0.0s; }
+        .hero-name-heading .outline .char:nth-child(2) { transition-delay: 0.03s; }
+        .hero-name-heading .outline .char:nth-child(3) { transition-delay: 0.06s; }
+        .hero-name-heading .outline .char:nth-child(4) { transition-delay: 0.09s; }
+        .hero-name-heading .outline .char:nth-child(5) { transition-delay: 0.12s; }
+        .hero-name-heading .outline .char:nth-child(6) { transition-delay: 0.15s; }
+
+        /* Hero Info Card */
+        .hero-info-card {
+            position: absolute;
+            bottom: 12%;
+            left: 8%;
+            max-width: 380px;
+            z-index: 5;
+            text-align: left;
+        }
+        .hero-info-card h2 {
+            font-family: var(--font-body);
+            font-size: clamp(1.8rem, 2.2vw, 2.2rem);
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.6rem;
+            letter-spacing: -0.02em;
+        }
+        .hero-info-card p {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #555;
+            margin-bottom: 1.6rem;
+        }
+        .btn-collaborate {
+            display: inline-block;
+            background-color: #111111;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s, box-shadow 0.3s;
+        }
+        .btn-collaborate:hover {
+            background-color: var(--accent-color);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 45, 32, 0.25);
+        }
+
+        /* Hero Social Pills */
+        .hero-social-pills {
+            position: fixed;
+            top: 90px;
+            right: 5vw;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.45rem;
+            z-index: 99;
+        }
+        .social-pill {
+            background: rgba(255,255,255,0.92);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 0.55rem 1rem;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-family: var(--font-body);
+            font-size: 0.78rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            min-width: 120px;
+            transition: border-color 0.3s, background-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            backdrop-filter: blur(10px);
+        }
+        .social-pill:hover {
+            border-color: #111111;
+            background-color: #111111;
+            color: #ffffff;
+            transform: translateX(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+        .pill-icon {
+            width: 16px;
+            height: 16px;
+            stroke-width: 1.75;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* --- INTERACTIVE DIGITAL INSTALLATION UI --- */
+        .installation-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+        .instruction-prompt {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(0, 0, 0, 0.5);
+            animation: breathing 3s infinite ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .instruction-prompt::before {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+        }
+        @keyframes breathing {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        /* --- SECTIONS FROM PORTFOLIO --- */
+        .manifesto-sec {
+            background: var(--bg-color);
+            color: var(--text-color);
+            padding: 15rem 10vw;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 5;
+        }
+        .manifesto-text {
+            font-size: clamp(2rem, 5.5vw, 5.5rem);
+            font-family: var(--font-display);
+            font-weight: 800;
+            max-width: 90vw;
+            line-height: 1.05;
+            text-transform: uppercase;
+        }
+        .manifesto-text span {
+            color: rgba(0, 0, 0, 0.12);
+            transition: color 0.5s ease;
+        }
+
+        .about-sec {
+            background: #fafafa;
+            color: var(--text-color);
+            padding: 10rem 10vw;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8vw;
+            position: relative;
+            z-index: 5;
+        }
+        .about-portrait-wrap {
+            position: relative;
+        }
+        .about-portrait {
+            position: sticky;
+            top: 15vh;
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            border-radius: 12px;
+            filter: grayscale(100%) contrast(1.1);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .about-content {
+            padding-top: 10vh;
+        }
+        .about-statement {
+            font-size: clamp(1.8rem, 3.5vw, 3.5rem);
+            font-family: var(--font-display);
+            margin-bottom: 4rem;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+        .about-statement em {
+            color: var(--accent-color);
+            font-style: normal;
+        }
+        .about-body {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #888;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 600px;
+        }
+
+        /* --- PROJECT GRID --- */
+        .projects-sec {
+            background: var(--bg-color);
+            color: var(--text-color);
+            position: relative;
+            z-index: 5;
+            padding: 10rem 0;
+        }
+        .project-panel {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 10vw;
+            position: sticky;
+            top: 0;
+            background: var(--bg-color);
+        }
+        .project-content {
+            flex: 1;
+            padding-right: 8vw;
+        }
+        .project-meta {
+            font-family: var(--font-mono);
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-size: 0.9rem;
+        }
+        .project-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 5.5rem);
+            line-height: 0.95;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+        }
+        .project-desc {
+            font-size: 1.05rem;
+            color: #777;
+            line-height: 1.7;
+            max-width: 85%;
+        }
+        .project-mockup {
+            flex: 1.2;
+            height: 65vh;
+            background: #f0f0f0;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+        }
+        .project-mockup img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s;
+        }
+        .project-panel:hover .project-mockup img {
+            transform: scale(1.05);
+            opacity: 0.95;
+        }
+
+        /* --- ARCHITECTURE --- */
+        .flow-sec {
+            background: #fafafa;
+            padding: 12rem 10vw;
+            position: relative;
+            z-index: 5;
+        }
+        .flow-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 4vw, 4.5rem);
+            margin-bottom: 6rem;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        .flow-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .flow-node {
+            padding: 1.8rem 3.5rem;
+            border: 1px solid rgba(0,0,0,0.05);
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            background: #fff;
+            color: var(--text-color);
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            width: clamp(280px, 40vw, 480px);
+            text-align: center;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .flow-line {
+            width: 1px;
+            height: 60px;
+            background: rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        .flow-packet {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(to bottom, transparent, var(--accent-color), transparent);
+            animation: flowAnim 1.5s infinite linear;
+        }
+        @keyframes flowAnim {
+            0% { transform: translateY(-20px); }
+            100% { transform: translateY(60px); }
+        }
+
+        /* --- NUMBERS --- */
+        .numbers-sec {
+            background: var(--bg-color);
+            padding: 12rem 10vw;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4vw;
+            text-align: center;
+            position: relative;
+            z-index: 5;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        .num-block { display: flex; flex-direction: column; align-items: center; }
+        .num-val {
+            font-family: var(--font-display);
+            font-size: clamp(3.5rem, 8vw, 9rem);
+            line-height: 1;
+            font-weight: 800;
+            color: var(--text-color);
+        }
+        .num-label {
+            font-family: var(--font-mono);
+            color: var(--accent-color);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+        }
+
+        /* --- CONTACT CTA --- */
+        .final-sec {
+            height: 100vh;
+            background: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 5;
+            overflow: hidden;
+        }
+        .final-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 8vw, 8rem);
+            line-height: 0.9;
+            margin-bottom: 4rem;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+        .final-contact {
+            font-family: var(--font-mono);
+            display: flex;
+            gap: 4rem;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .final-contact a {
+            color: var(--text-color);
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        .final-contact a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 1px;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+        .final-contact a:hover::after { width: 100%; }
+        
+        .final-bg-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(255,45,32,0.08) 0%, transparent 60%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- HERO ENHANCEMENTS --- */
+        .hero-badge {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent-color);
+            background: rgba(255, 45, 32, 0.08);
+            border: 1px solid rgba(255, 45, 32, 0.2);
+            padding: 0.4rem 0.9rem;
+            border-radius: 50px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        .hero-cta-group {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .btn-secondary-cta {
+            display: inline-block;
+            background: transparent;
+            color: var(--text-color);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            text-decoration: none;
+            padding: 0.8rem 1.6rem;
+            border-radius: 50px;
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: border-color 0.3s, background-color 0.3s, color 0.3s, transform 0.3s;
+        }
+        .btn-secondary-cta:hover {
+            border-color: #111;
+            background: #111;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* --- ABOUT CREDENTIALS --- */
+        .about-tag {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: #111;
+            border: 1px solid rgba(0,0,0,0.08);
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+        .about-credentials {
+            margin-top: 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+        .credential-card {
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 1.4rem 1.6rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .credential-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 45, 32, 0.3);
+        }
+        .credential-card.full-span {
+            grid-column: 1 / -1;
+        }
+        .cred-label {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent-color);
+            margin-bottom: 0.4rem;
+        }
+        .cred-val {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 0.25rem;
+        }
+        .cred-sub {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            color: #666;
+        }
+        .cred-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.6rem;
+        }
+        .cred-tag {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            background: #f4f4f4;
+            color: #333;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        /* --- PROJECT ENHANCEMENTS --- */
+        .project-role-badge {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #fff;
+            background: #111;
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            margin-left: 0.8rem;
+            vertical-align: middle;
+        }
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            margin: 1.4rem 0 1.8rem 0;
+        }
+        .project-tag {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            background: #f3f3f3;
+            color: #222;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .project-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .btn-case-study {
+            background: #111;
+            color: #fff;
+            border: 1px solid #111;
+            padding: 0.75rem 1.6rem;
+            border-radius: 50px;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .btn-case-study:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 45, 32, 0.25);
+        }
+        .btn-project-link {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: #555;
+            text-decoration: none;
+            padding: 0.75rem 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 50px;
+            transition: all 0.25s;
+        }
+        .btn-project-link:hover {
+            color: #111;
+            border-color: #111;
+        }
+
+        /* --- CAPABILITIES SECTION (WHAT I BUILD) --- */
+        .capabilities-sec {
+            background: #fafafa;
+            padding: 12rem 10vw;
+            position: relative;
+            z-index: 5;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        .sec-header {
+            margin-bottom: 5rem;
+            max-width: 800px;
+        }
+        .sec-kicker {
+            font-family: var(--font-mono);
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .sec-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.4rem, 4.5vw, 4.5rem);
+            line-height: 1.05;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+        .cap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        .cap-card {
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            padding: 2.8rem 2.2rem;
+            border-radius: 8px;
+            position: relative;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s, border-color 0.4s;
+        }
+        .cap-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 45, 32, 0.35);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+        }
+        .cap-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 2rem;
+            right: 2rem;
+            height: 2px;
+            background: transparent;
+            transition: background 0.3s;
+        }
+        .cap-card:hover::before {
+            background: var(--accent-color);
+        }
+        .cap-num {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.1em;
+        }
+        .cap-name {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
+        }
+        .cap-desc {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            line-height: 1.65;
+            color: #666;
+        }
+
+        /* --- TECHNICAL STACK SECTION --- */
+        .tech-stack-sec {
+            background: var(--bg-color);
+            padding: 10rem 10vw;
+            position: relative;
+            z-index: 5;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        .stack-groups-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .stack-group {
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 2.2rem;
+            border-radius: 8px;
+            background: #fff;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .stack-group:hover {
+            border-color: rgba(255, 45, 32, 0.4);
+            transform: translateY(-4px);
+        }
+        .stack-group-title {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent-color);
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .stack-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .stack-pill {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            background: #f6f6f6;
+            color: #222;
+            padding: 0.4rem 0.85rem;
+            border-radius: 4px;
+            border: 1px solid rgba(0,0,0,0.04);
+            transition: all 0.2s;
+        }
+        .stack-pill:hover {
+            background: #111;
+            color: #fff;
+        }
+
+        /* --- JOURNEY TIMELINE --- */
+        .journey-sec {
+            background: #fafafa;
+            padding: 12rem 10vw;
+            position: relative;
+            z-index: 5;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        .timeline {
+            max-width: 860px;
+            margin: 4rem auto 0 auto;
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px solid rgba(0,0,0,0.08);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3.5rem;
+            padding-left: 1.5rem;
+        }
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.7rem;
+            top: 0.2rem;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(255, 45, 32, 0.1);
+        }
+        .timeline-date {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
+        .timeline-role {
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+        .timeline-org {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: #444;
+            font-weight: 500;
+            margin-bottom: 0.6rem;
+        }
+        .timeline-desc {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            line-height: 1.65;
+            color: #666;
+        }
+
+        /* --- CASE STUDY MODAL / DRAWER --- */
+        .case-study-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1000;
+            display: flex;
+            justify-content: flex-end;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0.4s, opacity 0.4s ease;
+            cursor: default;
+        }
+        .case-study-modal.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .case-study-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(8px);
+        }
+        .case-study-drawer {
+            position: relative;
+            width: clamp(340px, 60vw, 840px);
+            height: 100%;
+            background: #ffffff;
+            z-index: 2;
+            overflow-y: auto;
+            padding: 4.5rem 4rem;
+            box-shadow: -20px 0 60px rgba(0,0,0,0.15);
+            transform: translateX(100%);
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .case-study-modal.active .case-study-drawer {
+            transform: translateX(0%);
+        }
+        .drawer-close {
+            position: absolute;
+            top: 2rem;
+            right: 2.5rem;
+            background: #f4f4f4;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 50px;
+            padding: 0.5rem 1.1rem;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .drawer-close:hover {
+            background: #111;
+            color: #fff;
+        }
+        .cs-tag {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+        }
+        .cs-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+            line-height: 1.05;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+        .cs-subtitle {
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 2.5rem;
+            line-height: 1.5;
+        }
+        .cs-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            background: #fafafa;
+            border: 1px solid rgba(0,0,0,0.06);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 3rem;
+        }
+        .cs-meta-item .meta-k {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.25rem;
+        }
+        .cs-meta-item .meta-v {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #111;
+        }
+        .cs-section {
+            margin-bottom: 2.5rem;
+        }
+        .cs-sec-heading {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--accent-color);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .cs-sec-heading::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: var(--accent-color);
+            border-radius: 50%;
+        }
+        .cs-sec-content {
+            font-family: var(--font-body);
+            font-size: 1rem;
+            line-height: 1.75;
+            color: #444;
+        }
+        .cs-sec-content ul {
+            padding-left: 1.4rem;
+            margin-top: 0.6rem;
+        }
+        .cs-sec-content li {
+            margin-bottom: 0.5rem;
+        }
+        .cs-diagram-box {
+            background: #111;
+            color: #e5e5e5;
+            padding: 1.8rem;
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            line-height: 1.7;
+            margin: 1.2rem 0;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 45, 32, 0.2);
+        }
+        .cs-footer-links {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 1024px) {
+            .about-sec { grid-template-columns: 1fr; gap: 4rem; }
+            .about-portrait { position: relative; top: 0; width: 80%; margin: 0 auto; display: block;}
+            .project-panel { flex-direction: column; height: auto; padding: 8rem 8vw; gap: 4rem; position: relative; }
+            .project-mockup { height: 45vh; width: 100%; }
+            .numbers-sec { grid-template-columns: repeat(2, 1fr); gap: 4rem; }
+            .stack-groups-grid { grid-template-columns: repeat(2, 1fr); }
+            .case-study-drawer { width: 85vw; padding: 3rem 2rem; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero-info-card { left: 5vw; bottom: 8%; max-width: 90vw; }
+            .hero-social-pills { top: 80px; right: 5vw; grid-template-columns: 1fr; }
+            .social-pill { min-width: auto; padding: 0.45rem 0.85rem; font-size: 0.72rem; }
+            .numbers-sec { grid-template-columns: 1fr; gap: 3rem; }
+            .final-contact { flex-direction: column; gap: 1.5rem; }
+            .about-credentials { grid-template-columns: 1fr; }
+            .stack-groups-grid { grid-template-columns: 1fr; }
+            .case-study-drawer { width: 100vw; padding: 2.5rem 1.5rem; }
+            .cs-meta-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Reduce Motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor">
+        <div class="cursor-dot"></div>
+        <div class="cursor-ring"></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="nav-container">
+        <div class="nav-status">
+            <span class="status-dot"></span>
+            <span>Available for New Project</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#projects" class="hover-target">Work</a></li>
+            <li><a href="#about" class="hover-target">Service</a></li>
+            <li><a href="#architecture" class="hover-target">Experience</a></li>
+            <li><a href="#contact" class="hover-target">Contact</a></li>
+        </ul>
+        <a href="#contact" class="nav-cta hover-target">Let's Talk ↗</a>
+    </header>
+
+    <!-- MAIN PAGE WRAPPER (For Lenis Scroll) -->
+    <div class="main-wrapper">
+        
+        <!-- HERO CHAPTER: CINEMATIC DIGITAL EXPERIENCE -->
+        <section class="hero-section">
+            
+            <!-- WebGL Canvas for Interactive Dual-Portrait Reveal & Fluid Ripple -->
+            <canvas id="webgl-canvas"></canvas>
+            
+            <!-- Canvas specifically for Background Atmosphere & Fog Shaders -->
+            <canvas id="bg-canvas"></canvas>
+
+            <!-- Sandwiched Display Typography (Outline + Solid) -->
+            <h1 class="hero-name-heading">
+                <span class="outline">SACHIN</span>
+                <span class="fill">RANA</span>
+            </h1>
+
+            <!-- Left Info Panel (Exactly Like Before) -->
+            <div class="hero-info-card">
+                <h2>Full Stack Developer</h2>
+                <p>Engineering digital systems that are fast, scalable, and performance focused.</p>
+                <a href="#contact" class="btn-collaborate hover-target">Let's collaborate ↗</a>
+            </div>
+        </section>
+
+        <!-- CHAPTER 02: MANIFESTO -->
+        <section class="manifesto-sec">
+            <h2 class="manifesto-text reveal-text">
+                I DON'T JUST BUILD APPLICATIONS.<br>
+                I TURN PROBLEMS INTO<br>
+                WORKING DIGITAL PRODUCTS<br>
+                FROM ZERO TO DEPLOYMENT.
+            </h2>
+        </section>
+
+        <!-- CHAPTER 03: ABOUT -->
+        <section class="about-sec" id="about">
+            <div class="about-portrait-wrap">
+                <img src="sach-modified.jpeg" class="about-portrait" alt="Sachin Rana — Computer Science & Product Builder">
+                <div class="about-tag">Computer Science · BITS Pilani</div>
+            </div>
+            <div class="about-content">
+                <h3 class="about-statement reveal-text">
+                    I DON'T JUST BUILD APPLICATIONS. I TURN PROBLEMS INTO <em>WORKING DIGITAL PRODUCTS</em>.
+                </h3>
+                <div class="about-body">
+                    <p>I'm Sachin, a Computer Science student and full-stack developer who likes building products from the ground up. I work across React, Python backends, databases, APIs and AI integrations, with a particular interest in tools that solve real workflow and hiring problems.</p>
+                    <p>I'm pursuing a B.Sc. in Computer Science through the BITS Pilani online programme. My work ranges from SkillLedger, a technical hiring and coding-assessment platform, to HireFlow AI, an AI-assisted recruitment automation platform, plus hackathon and product work.</p>
+                    <p>I care about more than making a demo look good. I want to understand the architecture, user flow, failure cases and path from prototype to a usable product.</p>
+                </div>
+
+                <!-- Verified Academic & Industry Credentials -->
+                <div class="about-credentials">
+                    <div class="credential-card">
+                        <span class="cred-label">Degree</span>
+                        <div class="cred-val">B.Sc. Computer Science</div>
+                        <div class="cred-sub">BITS Pilani Online Programme · Expected May 2028</div>
+                    </div>
+                    <div class="credential-card">
+                        <span class="cred-label">Industry Certification</span>
+                        <div class="cred-val">AWS Solutions Architecture</div>
+                        <div class="cred-sub">Job Simulation · Forage · Oct 2025</div>
+                    </div>
+                    <div class="credential-card full-span">
+                        <span class="cred-label">Relevant Coursework</span>
+                        <div class="cred-tags">
+                            <span class="cred-tag">Data Structures & Algorithms</span>
+                            <span class="cred-tag">Cloud Computing</span>
+                            <span class="cred-tag">Scalable System Design</span>
+                            <span class="cred-tag">AI-Powered Product Development</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPTER 04: SELECTED WORK -->
+        <section class="projects-sec" id="projects">
+            
+            <!-- PROJECT 1: SKILLLEDGER (FLAGSHIP) -->
+            <div class="project-panel" id="project-skillledger">
+                <div class="project-content">
+                    <div class="project-meta">
+                        Flagship Build
+                        <span class="project-role-badge">Hiring Trust Platform</span>
+                    </div>
+                    <h2 class="project-title reveal-text">SKILL<br>LEDGER</h2>
+                    <p class="project-desc">Trust Infrastructure for Technical Hiring. GitHub intelligence + coding assessment platform designed to evaluate real engineering ability using commit/PR evidence rather than self-reported claims. Integrates Monaco Editor and Judge0 for automated code grading.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">React</span>
+                        <span class="project-tag">Vite</span>
+                        <span class="project-tag">Tailwind</span>
+                        <span class="project-tag">Monaco Editor</span>
+                        <span class="project-tag">FastAPI</span>
+                        <span class="project-tag">PostgreSQL</span>
+                        <span class="project-tag">Judge0</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn-case-study hover-target" onclick="openCaseStudy('skillledger')">
+                            Deep Case Study ↗
+                        </button>
+                        <a href="https://github.com/Sachinva-karma" target="_blank" rel="noopener noreferrer" class="btn-project-link hover-target">
+                            GitHub Repository ↗
+                        </a>
+                    </div>
+                </div>
+                <div class="project-mockup">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop" alt="SkillLedger Platform UI">
+                </div>
+            </div>
+            
+            <!-- PROJECT 2: HIREFLOW AI -->
+            <div class="project-panel" id="project-hireflow">
+                <div class="project-content">
+                    <div class="project-meta">
+                        AI & Backend
+                        <span class="project-role-badge">Multi-Tenant SaaS</span>
+                    </div>
+                    <h2 class="project-title reveal-text">HIREFLOW<br>AI</h2>
+                    <p class="project-desc">Multi-Tenant SaaS Recruitment Automation Platform. Powered by Gemini AI agents for job-description parsing and resume screening. Features async batch processing, SHA-256 response caching, exponential backoff, and robust JWT/bcrypt authentication.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">Flask</span>
+                        <span class="project-tag">React</span>
+                        <span class="project-tag">Vite</span>
+                        <span class="project-tag">MongoDB Atlas</span>
+                        <span class="project-tag">Google Gemini</span>
+                        <span class="project-tag">JWT</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn-case-study hover-target" onclick="openCaseStudy('hireflow')">
+                            Deep Case Study ↗
+                        </button>
+                        <a href="https://github.com/Sachinva-karma" target="_blank" rel="noopener noreferrer" class="btn-project-link hover-target">
+                            Architecture Specs ↗
+                        </a>
+                    </div>
+                </div>
+                <div class="project-mockup">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="HireFlow AI Dashboard">
+                </div>
+            </div>
+
+            <!-- PROJECT 3: QWERTY (SYNAPSE OS) -->
+            <div class="project-panel" id="project-qwerty">
+                <div class="project-content">
+                    <div class="project-meta">
+                        Multi-Agent Governance
+                        <span class="project-role-badge">Observability Platform</span>
+                    </div>
+                    <h2 class="project-title reveal-text">QWERTY<br>SYNAPSE OS</h2>
+                    <p class="project-desc">Next-generation visibility, orchestration, and governance platform for autonomous multi-agent systems. Features real-time topology mapping, hallucination risk scoring, human-in-the-loop governance controls, and enterprise-grade cost & token tracking across AI agent swarms.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">React 18</span>
+                        <span class="project-tag">Vite</span>
+                        <span class="project-tag">Tailwind CSS</span>
+                        <span class="project-tag">Node.js</span>
+                        <span class="project-tag">Socket.io</span>
+                        <span class="project-tag">React Flow</span>
+                        <span class="project-tag">Recharts</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn-case-study hover-target" onclick="openCaseStudy('qwerty')">
+                            Deep Case Study ↗
+                        </button>
+                        <a href="https://github.com/hritikshuklalfc/qwerty#synapse-os" target="_blank" rel="noopener noreferrer" class="btn-project-link hover-target">
+                            GitHub Repository ↗
+                        </a>
+                    </div>
+                </div>
+                <div class="project-mockup">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2034&auto=format&fit=crop" alt="Qwerty Synapse OS Multi-Agent Platform">
+                </div>
+            </div>
+
+            <!-- PROJECT 4: SYNAPSE OS -->
+            <div class="project-panel" id="project-synapse">
+                <div class="project-content">
+                    <div class="project-meta">
+                        Frontend & Product
+                        <span class="project-role-badge">Production Web</span>
+                    </div>
+                    <h2 class="project-title reveal-text">SYNAPSE<br>OS</h2>
+                    <p class="project-desc">AI Agent Observability & Interception Platform. Production web interface built with an austere, high-contrast monochrome design system. Includes interactive legal, contact, and careers modules with optimized form and CTA conversion funnels.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">React</span>
+                        <span class="project-tag">Vite</span>
+                        <span class="project-tag">Tailwind CSS</span>
+                        <span class="project-tag">Design System</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn-case-study hover-target" onclick="openCaseStudy('synapse')">
+                            View Interface Specs ↗
+                        </button>
+                        <a href="https://github.com/Sachinva-karma" target="_blank" rel="noopener noreferrer" class="btn-project-link hover-target">
+                            Live Demo ↗
+                        </a>
+                    </div>
+                </div>
+                <div class="project-mockup">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop" alt="Synapse OS Platform">
+                </div>
+            </div>
+
+        </section>
+
+        <!-- CHAPTER 05: WHAT I BUILD (CAPABILITIES) -->
+        <section class="capabilities-sec" id="capabilities">
+            <div class="sec-header">
+                <span class="sec-kicker">Core Competencies</span>
+                <h2 class="sec-title reveal-text">What I Build</h2>
+            </div>
+            <div class="cap-grid">
+                <div class="cap-card">
+                    <div class="cap-num">01 / CAPABILITY</div>
+                    <h3 class="cap-name">Full-Stack Web</h3>
+                    <p class="cap-desc">Responsive, high-density interfaces and product flows constructed with React, Vite, Tailwind CSS, and modern JavaScript/TypeScript architectures.</p>
+                </div>
+                <div class="cap-card">
+                    <div class="cap-num">02 / CAPABILITY</div>
+                    <h3 class="cap-name">Backend & APIs</h3>
+                    <p class="cap-desc">Robust Python microservices with FastAPI and Flask, multi-tenant authentication, normalized data models, and resilient REST/WebSocket endpoints.</p>
+                </div>
+                <div class="cap-card">
+                    <div class="cap-num">03 / CAPABILITY</div>
+                    <h3 class="cap-name">AI Applications</h3>
+                    <p class="cap-desc">AI-assisted workflows, agent screening pipelines, Google Gemini integrations, RAG-based document retrieval, and intelligent automation.</p>
+                </div>
+                <div class="cap-card">
+                    <div class="cap-num">04 / CAPABILITY</div>
+                    <h3 class="cap-name">Developer Tools</h3>
+                    <p class="cap-desc">Browser coding execution environments, GitHub API intelligence pipelines, and automated assessment grading with Monaco Editor and Judge0.</p>
+                </div>
+                <div class="cap-card">
+                    <div class="cap-num">05 / CAPABILITY</div>
+                    <h3 class="cap-name">Data & Infra</h3>
+                    <p class="cap-desc">Relational and document persistence across PostgreSQL and MongoDB Atlas, Docker containerization, AWS cloud architecture, and n8n pipelines.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPTER 06: TECHNICAL STACK -->
+        <section class="tech-stack-sec" id="stack">
+            <div class="sec-header">
+                <span class="sec-kicker">Technical Breadth</span>
+                <h2 class="sec-title reveal-text">Technologies</h2>
+            </div>
+            <div class="stack-groups-grid">
+                <div class="stack-group">
+                    <div class="stack-group-title">
+                        <span>Languages</span>
+                        <span>[6]</span>
+                    </div>
+                    <div class="stack-pills">
+                        <span class="stack-pill">Python</span>
+                        <span class="stack-pill">JavaScript</span>
+                        <span class="stack-pill">TypeScript</span>
+                        <span class="stack-pill">C++</span>
+                        <span class="stack-pill">C basics</span>
+                        <span class="stack-pill">SQL</span>
+                    </div>
+                </div>
+                <div class="stack-group">
+                    <div class="stack-group-title">
+                        <span>Frontend</span>
+                        <span>[5]</span>
+                    </div>
+                    <div class="stack-pills">
+                        <span class="stack-pill">React</span>
+                        <span class="stack-pill">Vite</span>
+                        <span class="stack-pill">Tailwind CSS</span>
+                        <span class="stack-pill">HTML5</span>
+                        <span class="stack-pill">CSS3 / Vanilla</span>
+                    </div>
+                </div>
+                <div class="stack-group">
+                    <div class="stack-group-title">
+                        <span>Backend</span>
+                        <span>[2]</span>
+                    </div>
+                    <div class="stack-pills">
+                        <span class="stack-pill">FastAPI</span>
+                        <span class="stack-pill">Flask</span>
+                    </div>
+                </div>
+                <div class="stack-group">
+                    <div class="stack-group-title">
+                        <span>Data & Storage</span>
+                        <span>[2]</span>
+                    </div>
+                    <div class="stack-pills">
+                        <span class="stack-pill">PostgreSQL</span>
+                        <span class="stack-pill">MongoDB Atlas</span>
+                    </div>
+                </div>
+                <div class="stack-group">
+                    <div class="stack-group-title">
+                        <span>AI & Automation</span>
+                        <span>[3]</span>
+                    </div>
+                    <div class="stack-pills">
+                        <span class="stack-pill">Google Gemini API</span>
+                        <span class="stack-pill">RAG Architecture</span>
+                        <span class="stack-pill">n8n Workflows</span>
+                    </div>
+                </div>
+                <div class="stack-group">
+                    <div class="stack-group-title">
+                        <span>Engineering & Tooling</span>
+                        <span>[5]</span>
+                    </div>
+                    <div class="stack-pills">
+                        <span class="stack-pill">Docker</span>
+                        <span class="stack-pill">Git / GitHub</span>
+                        <span class="stack-pill">AWS</span>
+                        <span class="stack-pill">Monaco Editor</span>
+                        <span class="stack-pill">Judge0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPTER 07: CREDIBILITY METRICS (VERIFIED) -->
+        <section class="numbers-sec">
+            <div class="num-block">
+                <div class="num-val" data-target="4">04</div>
+                <div class="num-label">Featured Builds</div>
+            </div>
+            <div class="num-block">
+                <div class="num-val" data-target="1">01</div>
+                <div class="num-label">AWS Certification</div>
+            </div>
+            <div class="num-block">
+                <div class="num-val" data-target="1">01</div>
+                <div class="num-label">Hackathon Product</div>
+            </div>
+            <div class="num-block">
+                <div class="num-val" data-target="1">01</div>
+                <div class="num-label">Flagship Hiring Platform</div>
+            </div>
+        </section>
+
+        <!-- CHAPTER 08: JOURNEY & MILESTONES -->
+        <section class="journey-sec" id="journey">
+            <div class="sec-header">
+                <span class="sec-kicker">Trajectory</span>
+                <h2 class="sec-title reveal-text">Education & Journey</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2024 — Expected May 2028</div>
+                    <h3 class="timeline-role">B.Sc. in Computer Science</h3>
+                    <div class="timeline-org">BITS Pilani (Online Programme)</div>
+                    <p class="timeline-desc">Pursuing rigorous foundational CS coursework covering Data Structures & Algorithms, Scalable System Design, Cloud Computing, and AI-Powered Product Development.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">October 2025</div>
+                    <h3 class="timeline-role">AWS Solutions Architecture Simulation</h3>
+                    <div class="timeline-org">Forage & AWS</div>
+                    <p class="timeline-desc">Hands-on architecture simulation evaluating highly available cloud infrastructure, multi-region resilience, VPC subnets, and scalable backend services.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2025</div>
+                    <h3 class="timeline-role">Multi-Agent Governance Platform</h3>
+                    <div class="timeline-org">QWERTY · Synapse OS</div>
+                    <p class="timeline-desc">Architected a real-time observability and governance platform for autonomous AI agent swarms — featuring topology mapping via React Flow, hallucination risk scoring, human-in-the-loop approval gates, and WebSocket-driven live telemetry.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2025 — Present</div>
+                    <h3 class="timeline-role">Flagship Product Engineering</h3>
+                    <div class="timeline-org">SkillLedger & HireFlow AI</div>
+                    <p class="timeline-desc">Architecting full-stack systems from zero: implementing browser code evaluation via Judge0, commit-level GitHub analytics, async AI resume pipelines, and multi-tenant SaaS security.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPTER 09: OUTRO CTA & FOOTER -->
+        <section class="final-sec" id="contact">
+            <div class="final-bg-glow"></div>
+            <h1 class="final-title reveal-text">
+                Let's build<br>something great
+            </h1>
+            <p style="font-family: var(--font-body); font-size: 1.1rem; color: #666; max-width: 500px; margin-bottom: 3.5rem; text-align: center;">
+                Open to internships, freelance projects, and technical product collaborations.
+            </p>
+            <div class="final-contact">
+                <a href="mailto:sachinrana77601@gmail.com" class="hover-target">Email: sachinrana77601@gmail.com</a>
+                <a href="https://github.com/Sachinva-karma" target="_blank" rel="noopener noreferrer" class="hover-target">GitHub</a>
+                <a href="https://www.linkedin.com/in/sachin-rana077" target="_blank" rel="noopener noreferrer" class="hover-target">LinkedIn</a>
+                <a href="https://www.instagram.com/itz_sachin_057/" target="_blank" rel="noopener noreferrer" class="hover-target">Instagram</a>
+            </div>
+            <div style="margin-top: 5rem; font-family: var(--font-mono); font-size: 0.8rem; color: #888; letter-spacing: 0.1em; text-transform: uppercase;">
+                Built by Sachin Rana · BITS Pilani CS · Product Builder
+            </div>
+        </section>
+        
+    </div>
+
+    <!-- INTERACTIVE CASE STUDY MODAL / DRAWER -->
+    <div class="case-study-modal" id="caseStudyModal">
+        <div class="case-study-backdrop" onclick="closeCaseStudy()"></div>
+        <div class="case-study-drawer">
+            <button class="drawer-close hover-target" onclick="closeCaseStudy()">Close ✕</button>
+            <div id="caseStudyBody">
+                <!-- Dynamically populated by openCaseStudy(projectId) -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Script imports -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="textures.js"></script>
+    
+    <script>
+        // ----------------------------------------------------
+        // 1. Setup Custom Cursor with Magnetic & Interaction Lerp
+        // ----------------------------------------------------
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorRing = document.querySelector('.cursor-ring');
+        
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let ringX = mouseX;
+        let ringY = mouseY;
+        let targetX = mouseX;
+        let targetY = mouseY;
+        let isHovered = false;
+        let portraitBaseY = 0;
+        let imageAspectRatio = 3.0 / 4.0;
+
+        window.addEventListener('mousemove', (e) => {
+            targetX = e.clientX;
+            targetY = e.clientY;
+        });
+
+        // Add hover classes
+        const hoverTargets = document.querySelectorAll('.hover-target, a, button, .tech-icon');
+        hoverTargets.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                isHovered = true;
+                gsap.to(cursorRing, {
+                    width: 60,
+                    height: 60,
+                    borderColor: 'rgba(255, 45, 32, 1)',
+                    backgroundColor: 'rgba(255, 45, 32, 0.05)',
+                    duration: 0.3
+                });
+                gsap.to(cursorDot, {
+                    scale: 2,
+                    duration: 0.2
+                });
+            });
+            el.addEventListener('mouseleave', () => {
+                isHovered = false;
+                gsap.to(cursorRing, {
+                    width: 30,
+                    height: 30,
+                    borderColor: 'rgba(255, 45, 32, 0.4)',
+                    backgroundColor: 'rgba(255, 45, 32, 0)',
+                    duration: 0.3
+                });
+                gsap.to(cursorDot, {
+                    scale: 1,
+                    duration: 0.2
+                });
+            });
+        });
+
+        // ----------------------------------------------------
+        // 2. Smooth Scrolling Setup (Lenis)
+        // ----------------------------------------------------
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+
+        if (window.location.hash) {
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+
+        const lenis = new Lenis({
+            duration: 1.4,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true,
+            wheelMultiplier: 1.0,
+        });
+
+        lenis.scrollTo(0, { immediate: true });
+
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000) });
+        gsap.ticker.lagSmoothing(0, 0);
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Ensure reload or pageshow always resets to the first section (top)
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
+            lenis.scrollTo(0, { immediate: true });
+            ScrollTrigger.refresh();
+        });
+
+        window.addEventListener('pageshow', () => {
+            window.scrollTo(0, 0);
+            lenis.scrollTo(0, { immediate: true });
+        });
+
+        window.addEventListener('beforeunload', () => {
+            window.scrollTo(0, 0);
+        });
+
+        // Smooth scroll for in-page navigation links via Lenis
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId !== '#') {
+                    const targetEl = document.querySelector(targetId);
+                    if (targetEl) {
+                        e.preventDefault();
+                        lenis.scrollTo(targetEl, { duration: 1.2 });
+                    }
+                }
+            });
+        });
+
+        // ----------------------------------------------------
+        // 3. WebGL Cinematic Scene (Unified Render Loop)
+        // ----------------------------------------------------
+        const canvas = document.getElementById('webgl-canvas');
+        const bgCanvas = document.getElementById('bg-canvas');
+        
+        // Portrait WebGL Setup (Transparency)
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.z = 5.0;
+
+        const renderer = new THREE.WebGLRenderer({ 
+            canvas: canvas, 
+            alpha: true, 
+            antialias: true,
+            powerPreference: "high-performance"
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Background WebGL Setup (Gradient/Fog/Atmosphere)
+        const bgScene = new THREE.Scene();
+        const bgCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+        const bgRenderer = new THREE.WebGLRenderer({
+            canvas: bgCanvas,
+            antialias: true
+        });
+        bgRenderer.setSize(window.innerWidth, window.innerHeight);
+        bgRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // ----------------------------------------------------
+        // 4. Fluid Ripple Simulation Removed (Per User Request)
+        // ----------------------------------------------------
+
+        // ----------------------------------------------------
+        // 5. Textures Loading (Grayscale & Color Portraits)
+        // ----------------------------------------------------
+        const textureLoader = new THREE.TextureLoader();
+        
+        const textureA = textureLoader.load(BASE64_BW, (tex) => {
+            tex.generateMipmaps = false;
+            tex.minFilter = THREE.LinearFilter;
+            tex.magFilter = THREE.LinearFilter;
+            portraitMaterial.uniforms.u_imageSize.value.set(tex.image.width, tex.image.height);
+            imageAspectRatio = tex.image.width / tex.image.height;
+            resize(); // Trigger initial resize adjustments
+        });
+
+        const textureB = textureLoader.load(BASE64_COLOR, (tex) => {
+            tex.generateMipmaps = false;
+            tex.minFilter = THREE.LinearFilter;
+            tex.magFilter = THREE.LinearFilter;
+        });
+
+        // ----------------------------------------------------
+        // 6. Volumetric Background Shaders
+        // ----------------------------------------------------
+        const bgMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                u_time: { value: 0 },
+                u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+                u_mouse: { value: new THREE.Vector2(0.5, 0.5) },
+                u_scroll: { value: 0.0 }
+            },
+            vertexShader: `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform float u_time;
+                uniform vec2 u_resolution;
+                uniform vec2 u_mouse;
+                uniform float u_scroll;
+                varying vec2 vUv;
+
+                // Simplex 2D noise
+                vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+                float snoise(vec2 v){
+                    const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+                            -0.577350269189626, 0.024390243902439);
+                    vec2 i  = floor(v + dot(v, C.yy) );
+                    vec2 x0 = v -   i + dot(i, C.xx);
+                    vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+                    vec4 x12 = x0.xyxy + C.xxzz;
+                    x12.xy -= i1;
+                    i = mod(i, 289.0);
+                    vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+                    + i.x + vec3(0.0, i1.x, 1.0 ));
+                    vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy),
+                        dot(x12.zw,x12.zw)), 0.0);
+                    m = m*m ; m = m*m ;
+                    vec3 x = 2.0 * fract(p * C.www) - 1.0;
+                    vec3 h = abs(x) - 0.5;
+                    vec3 ox = floor(x + 0.5);
+                    vec3 a0 = x - ox;
+                    m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+                    vec3 g;
+                    g.x  = a0.x  * x0.x  + h.x  * x0.y;
+                    g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+                    return 130.0 * dot(m, g);
+                }
+
+                void main() {
+                    vec2 uv = vUv;
+                    
+                    // Bright Cinematic Palette Gradient (Light grey to warm white/cream)
+                    vec2 c = vec2(0.5, 0.5);
+                    float dist = length(uv - c);
+                    vec3 col = mix(vec3(0.97, 0.97, 0.98), vec3(0.93, 0.93, 0.95), dist);
+
+                    // Dynamic Ambient Light Ray / Spotlight source
+                    vec2 lightPos = u_mouse / u_resolution;
+                    float lightDist = length(uv - lightPos);
+                    vec3 spotlight = vec3(1.0, 0.3, 0.25) * (1.0 - smoothstep(0.0, 0.7, lightDist)) * 0.025;
+                    col += spotlight;
+
+                    // Volumetric Fog Animation
+                    float fog = snoise(uv * 1.5 + vec2(u_time * 0.03, u_time * 0.02)) * 0.5 + 0.5;
+                    float fog2 = snoise(uv * 2.8 - vec2(u_time * 0.04, -u_time * 0.035)) * 0.5 + 0.5;
+                    float combinedFog = mix(fog, fog2, 0.5);
+                    vec3 fogColor = vec3(0.92, 0.92, 0.94) * combinedFog * 0.035;
+                    col += fogColor;
+
+                    // Moving Light Rays
+                    vec2 raySrc = vec2(0.2, 0.95);
+                    vec2 diff = uv - raySrc;
+                    float rayAngle = atan(diff.y, diff.x);
+                    float rayNoise = snoise(vec2(rayAngle * 4.0, u_time * 0.08)) * 0.5 + 0.5;
+                    float rayFalloff = smoothstep(1.6, 0.0, length(diff));
+                    col += vec3(1.0, 0.98, 0.95) * rayNoise * rayFalloff * 0.008;
+
+                    // Subtle luxury film noise
+                    float grain = fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453);
+                    col += (grain - 0.5) * 0.012;
+
+                    // Fade to pure white as scroll increases
+                    float scrollFade = clamp(u_scroll / 600.0, 0.0, 1.0);
+                    col = mix(col, vec3(1.0), scrollFade);
+
+                    gl_FragColor = vec4(col, 1.0);
+                }
+            `
+        });
+
+        const bgMesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), bgMaterial);
+        bgScene.add(bgMesh);
+
+        // ----------------------------------------------------
+        // 7. Interactive Portrait Mesh Material (Shaders)
+        // ----------------------------------------------------
+        const portraitMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                u_textureA: { value: textureA },
+                u_textureB: { value: textureB },
+                u_time: { value: 0 },
+                u_mouseMeshUv: { value: new THREE.Vector2(0.5, 0.5) },
+                u_hoverStrength: { value: 0.0 },
+                u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+                u_imageSize: { value: new THREE.Vector2(1000, 1333) }, // original size aspect 3:4
+                u_planeSize: { value: new THREE.Vector2(1, 1) },
+                u_revealRadius: { value: 0.35 }, // Size of eyes reveal region in world space
+                u_scroll: { value: 0 },
+                u_tilt: { value: new THREE.Vector2() },
+                u_textureBOffset: { value: new THREE.Vector2(0.0, 0.0) }
+            },
+            vertexShader: `
+                varying vec2 vUv;
+                varying vec3 vViewPosition;
+                void main() {
+                    vUv = uv;
+                    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+                    vViewPosition = -mvPosition.xyz;
+                    gl_Position = projectionMatrix * mvPosition;
+                }
+            `,
+            fragmentShader: `
+                uniform sampler2D u_textureA;
+                uniform sampler2D u_textureB;
+                uniform float u_time;
+                uniform vec2 u_mouseMeshUv;
+                uniform float u_hoverStrength;
+                uniform vec2 u_resolution;
+                uniform vec2 u_imageSize;
+                uniform vec2 u_planeSize;
+                uniform float u_revealRadius;
+                uniform float u_scroll;
+                uniform vec2 u_textureBOffset;
+                varying vec2 vUv;
+                varying vec3 vViewPosition;
+
+                // CSS object-fit cover math
+                vec2 getCoverUV(vec2 uv, vec2 imgSize, vec2 planeSize) {
+                    float imgAspect = imgSize.x / imgSize.y;
+                    float planeAspect = planeSize.x / planeSize.y;
+                    
+                    vec2 scale = vec2(1.0);
+                    if (planeAspect > imgAspect) {
+                        scale.y = imgAspect / planeAspect;
+                    } else {
+                        scale.x = planeAspect / imgAspect;
+                    }
+                    
+                    return (uv - 0.5) * scale + 0.5;
+                }
+
+                void main() {
+                    vec2 coverUv = getCoverUV(vUv, u_imageSize, u_planeSize);
+
+                    // 1. Portrait textures (B&W base + Color reveal)
+                    vec4 texBW = texture2D(u_textureA, coverUv);
+                    vec2 colorUv = coverUv + u_textureBOffset;
+                    vec4 texColor = texture2D(u_textureB, colorUv);
+
+                    // 2. Hover color reveal – circular region around cursor
+                    float dist = distance(vUv, u_mouseMeshUv);
+                    float revealMask = smoothstep(u_revealRadius, u_revealRadius * 0.3, dist);
+                    revealMask *= u_hoverStrength;
+
+                    // 3. Mix B&W with Color based on hover reveal
+                    vec3 finalColor = mix(texBW.rgb, texColor.rgb, revealMask);
+                    float finalAlpha = mix(texBW.a, texColor.a, revealMask);
+
+                    // Fade portrait on scroll out
+                    float fadeFactor = 1.0 - clamp((u_scroll - 200.0) / 400.0, 0.0, 1.0);
+                    
+                    gl_FragColor = vec4(finalColor, finalAlpha * fadeFactor);
+                }
+            `,
+            transparent: true,
+            depthWrite: false
+        });
+
+        // 3D Plane Mesh for Portrait
+        const portraitGeometry = new THREE.PlaneGeometry(1, 1, 32, 32);
+        const portraitMesh = new THREE.Mesh(portraitGeometry, portraitMaterial);
+        scene.add(portraitMesh);
+
+        // ----------------------------------------------------
+        // 8. Dynamic 3D Particle System
+        // ----------------------------------------------------
+        const particleCount = window.innerWidth < 768 ? 60 : 150;
+        const particleGeometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const initialPartData = [];
+
+        for (let i = 0; i < particleCount; i++) {
+            const x = (Math.random() - 0.5) * 5.0;
+            const y = (Math.random() - 0.5) * 3.5;
+            const z = (Math.random() - 0.5) * 2.0 - 0.5; // Spread around depth Z
+            
+            positions[i * 3] = x;
+            positions[i * 3 + 1] = y;
+            positions[i * 3 + 2] = z;
+            
+            initialPartData.push({
+                x, y, z,
+                speedX: (Math.random() - 0.5) * 0.015,
+                speedY: (Math.random() - 0.5) * 0.015,
+                speedZ: (Math.random() - 0.5) * 0.008,
+                amp: Math.random() * 0.08 + 0.02,
+                freq: Math.random() * 0.4 + 0.1,
+                phase: Math.random() * Math.PI * 2
+            });
+        }
+
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const particleMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                u_time: { value: 0 },
+                u_mouse3D: { value: new THREE.Vector3() },
+                u_scroll: { value: 0 }
+            },
+            vertexShader: `
+                uniform float u_time;
+                uniform vec3 u_mouse3D;
+                varying float vAlpha;
+                void main() {
+                    vec3 pos = position;
+                    
+                    // Subtle magnetic attraction
+                    float d = distance(pos, u_mouse3D);
+                    if (d < 2.0) {
+                        float pull = (1.0 - (d / 2.0)) * 0.16;
+                        pos = mix(pos, u_mouse3D, pull);
+                    }
+                    
+                    vAlpha = smoothstep(-2.5, 0.5, pos.z) * 0.65;
+                    
+                    vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
+                    gl_PointSize = (12.0 / -mvPos.z) * (1.0 + sin(u_time * 2.5 + pos.x) * 0.2);
+                    gl_Position = projectionMatrix * mvPos;
+                }
+            `,
+            fragmentShader: `
+                varying float vAlpha;
+                void main() {
+                    float dist = length(gl_PointCoord - vec2(0.5));
+                    if (dist > 0.5) discard;
+                    
+                    // Draw soft glowing spherical particles
+                    float glow = smoothstep(0.5, 0.0, dist);
+                    
+                    // Contrast charcoal / deep red code spark colors for bright background
+                    vec3 col = mix(vec3(0.08, 0.08, 0.12), vec3(0.85, 0.15, 0.1), gl_PointCoord.y);
+                    gl_FragColor = vec4(col, glow * vAlpha * 1.5);
+                }
+            `,
+            transparent: true,
+            depthWrite: false
+        });
+
+        const particles = new THREE.Points(particleGeometry, particleMaterial);
+        scene.add(particles);
+
+        const raycaster = new THREE.Raycaster();
+        const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+        const mouse3D = new THREE.Vector3();
+
+        // ----------------------------------------------------
+        // 9. Window Resize & Cover Calculations
+        // ----------------------------------------------------
+        function resize() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            
+            // Portrait Canvas Render sizing
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+
+            // Background Canvas sizing
+            bgRenderer.setSize(width, height);
+            bgMaterial.uniforms.u_resolution.value.set(width, height);
+            
+            // Adjust orthographic visible dimensions at z = 0
+            const vFOV = camera.fov * Math.PI / 180;
+            const visibleHeight = 2.0 * Math.tan(vFOV / 2.0) * camera.position.z;
+            const visibleWidth = visibleHeight * camera.aspect;
+
+            // Portrait Mesh scaling to act like "object-fit: contain/cover"
+            const imgAspect = imageAspectRatio;
+            const targetHeight = visibleHeight * 0.76; // Slightly larger for layout balance
+            const targetWidth = targetHeight * imgAspect;
+
+            if (visibleWidth * 0.95 < targetWidth) {
+                const mobileWidth = visibleWidth * 0.9;
+                portraitMesh.scale.set(mobileWidth, mobileWidth / imgAspect, 1.0);
+            } else {
+                portraitMesh.scale.set(targetWidth, targetHeight, 1.0);
+            }
+
+            // Set base Y coordinate so that the bottom of the portrait aligns with bottom of viewport
+            portraitBaseY = -visibleHeight / 2.0 + portraitMesh.scale.y / 2.0;
+            portraitMesh.position.y = portraitBaseY;
+
+            // Sync plane size in material
+            portraitMaterial.uniforms.u_planeSize.value.set(portraitMesh.scale.x, portraitMesh.scale.y);
+            portraitMaterial.uniforms.u_resolution.value.set(width, height);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        // ----------------------------------------------------
+        // 10. WebGL Unified Rendering & Animation Loop
+        // ----------------------------------------------------
+        const clock = new THREE.Clock();
+        let prevX = -1;
+        let prevY = -1;
+        let uvMouse = new THREE.Vector2(-1, -1);
+        let speed = 0;
+        let targetSpeed = 0;
+        
+        let meshTargetRotX = 0;
+        let meshTargetRotY = 0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const time = clock.getElapsedTime();
+            const scrollY = window.scrollY;
+
+            // Custom Cursor Dot matches mouse position instantly for sharp responsiveness
+            mouseX = targetX;
+            mouseY = targetY;
+            
+            // Custom Cursor Ring follows with a smooth, premium elastic lag
+            ringX += (targetX - ringX) * 0.12;
+            ringY += (targetY - ringY) * 0.12;
+
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+            cursorRing.style.left = ringX + 'px';
+            cursorRing.style.top = ringY + 'px';
+
+            // Calculate instantaneous mouse velocity for ripples
+            if (prevX >= 0 && prevY >= 0) {
+                const dist = Math.sqrt(Math.pow(targetX - prevX, 2) + Math.pow(targetY - prevY, 2));
+                targetSpeed = Math.min(dist * 0.06, 1.5);
+            }
+            prevX = targetX;
+            prevY = targetY;
+
+            // Smooth speed decay for water
+            speed += (targetSpeed - speed) * 0.1;
+            targetSpeed *= 0.85; // rapid bleed out
+
+            // Map mouse coordinates to WebGL texture coordinates
+            uvMouse.set(targetX / window.innerWidth, targetY / window.innerHeight);
+
+            // 2. Uniform updates for portrait shader
+            portraitMaterial.uniforms.u_time.value = time;
+            portraitMaterial.uniforms.u_scroll.value = scrollY;
+
+            // 3. Keep Portrait Mesh stable (no floating drift)
+            portraitMesh.position.y = portraitBaseY;
+            portraitMesh.position.x = 0;
+
+            // 4. Keep Portrait Mesh stable (no 3D Tilt following cursor)
+            portraitMesh.rotation.set(0, 0, 0);
+
+            // 5. Keep scale stable (no accumulative scroll zoom)
+            // Base scale is computed in resize() and kept constant.
+
+            // 6. Update 3D Raycast cursor coordinate for particles and portrait UV reveal
+            raycaster.setFromCamera(new THREE.Vector2(
+                (targetX / window.innerWidth) * 2.0 - 1.0,
+                -(targetY / window.innerHeight) * 2.0 + 1.0
+            ), camera);
+            raycaster.ray.intersectPlane(mousePlane, mouse3D);
+            particleMaterial.uniforms.u_mouse3D.value.copy(mouse3D);
+            particleMaterial.uniforms.u_time.value = time;
+
+            // Raycast against portraitMesh to find UV coordinates on the face for color reveal
+            const intersects = raycaster.intersectObject(portraitMesh);
+            let targetHoverStrength = 0.0;
+            if (intersects.length > 0) {
+                targetHoverStrength = 1.0;
+                const uv = intersects[0].uv;
+                portraitMaterial.uniforms.u_mouseMeshUv.value.x += (uv.x - portraitMaterial.uniforms.u_mouseMeshUv.value.x) * 0.12;
+                portraitMaterial.uniforms.u_mouseMeshUv.value.y += (uv.y - portraitMaterial.uniforms.u_mouseMeshUv.value.y) * 0.12;
+            }
+            portraitMaterial.uniforms.u_hoverStrength.value += (targetHoverStrength - portraitMaterial.uniforms.u_hoverStrength.value) * 0.08;
+
+            // 7. Slow particle animation drift
+            const pPositions = particleGeometry.attributes.position.array;
+            for (let i = 0; i < particleCount; i++) {
+                const data = initialPartData[i];
+                // Perlin-like slow floating sine oscillation
+                const wave = Math.sin(time * data.freq + data.phase) * data.amp;
+                
+                pPositions[i * 3] = data.x + wave * 0.6;
+                pPositions[i * 3 + 1] = data.y + wave;
+                
+                // slow drift forward
+                data.z += data.speedZ;
+                if (data.z > 1.5) data.z = -2.5; // wrap particles
+                pPositions[i * 3 + 2] = data.z;
+            }
+            particleGeometry.attributes.position.needsUpdate = true;
+
+            // 8. Background atmosphere rendering
+            bgMaterial.uniforms.u_time.value = time;
+            bgMaterial.uniforms.u_mouse.value.set(mouseX, mouseY);
+            bgMaterial.uniforms.u_scroll.value = scrollY;
+            bgRenderer.render(bgScene, bgCamera);
+
+            // 9. Main scene portrait rendering
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // ----------------------------------------------------
+        // 11. GSAP Scroll Trigger Animations
+        // ----------------------------------------------------
+        // Typography letter splitting
+        const splitText = new SplitType('.hero-name-heading span', { types: 'chars' });
+
+        // Animate typography letter entry on page load
+        gsap.from('.hero-name-heading .char', {
+            y: "100%",
+            opacity: 0,
+            duration: 1.2,
+            stagger: 0.03,
+            ease: "power4.out",
+            delay: 0.4,
+            clearProps: "transform,opacity"
+        });
+
+        // Typography break apart scroll parallax (outline moves left, fill moves right)
+        gsap.to('.hero-name-heading .outline', {
+            x: -120,
+            scrollTrigger: {
+                trigger: '.hero-section',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: true
+            }
+        });
+        gsap.to('.hero-name-heading .fill', {
+            x: 120,
+            scrollTrigger: {
+                trigger: '.hero-section',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: true
+            }
+        });
+
+        // Fade typography on scroll out
+        gsap.to('.hero-name-heading', {
+            opacity: 0,
+            scale: 0.9,
+            scrollTrigger: {
+                trigger: '.hero-section',
+                start: 'top top',
+                end: '60% top',
+                scrub: true
+            }
+        });
+
+        // Fade in UI cards and header elements on page load
+        gsap.from('.hero-info-card', {
+            x: -40,
+            opacity: 0,
+            duration: 1.2,
+            ease: "power3.out",
+            delay: 0.8
+        });
+        gsap.from('.hero-social-pills', {
+            x: 40,
+            opacity: 0,
+            duration: 1.2,
+            ease: "power3.out",
+            delay: 0.8
+        });
+        gsap.from('.nav-container', {
+            y: -20,
+            opacity: 0,
+            duration: 1.0,
+            ease: "power3.out",
+            delay: 0.2
+        });
+
+        // ----------------------------------------------------
+        // 13. Page Content Scroll Interactions (Lenis-linked)
+        // ----------------------------------------------------
+
+        // Manifesto revealing words
+        const manifestoSplit = new SplitType('.manifesto-text', { types: 'words' });
+        gsap.from(manifestoSplit.words, {
+            opacity: 0.12,
+            stagger: 0.08,
+            scrollTrigger: {
+                trigger: ".manifesto-sec",
+                start: "top 75%",
+                end: "center center",
+                scrub: 1
+            }
+        });
+        
+        manifestoSplit.words.forEach(word => {
+            gsap.to(word, {
+                color: '#ffffff',
+                scrollTrigger: {
+                    trigger: word,
+                    start: "top 72%",
+                    end: "top 50%",
+                    scrub: true
+                }
+            });
+        });
+
+        // About section slide trigger
+        gsap.fromTo('.about-portrait', 
+            { scale: 1.15 },
+            { 
+                scale: 1, 
+                scrollTrigger: { 
+                    trigger: ".about-sec", 
+                    start: "top bottom", 
+                    end: "top top", 
+                    scrub: true 
+                }
+            }
+        );
+
+        // Projects Stack pin trigger
+        const projects = gsap.utils.toArray('.project-panel');
+        projects.forEach((panel) => {
+            ScrollTrigger.create({
+                trigger: panel,
+                start: "top top",
+                pin: true,
+                pinSpacing: false
+            });
+            
+            const img = panel.querySelector('.project-mockup img');
+            gsap.fromTo(img, 
+                { scale: 1.22, opacity: 0.5 },
+                { 
+                    scale: 1, 
+                    opacity: 0.95,
+                    scrollTrigger: { 
+                        trigger: panel, 
+                        start: "top bottom", 
+                        end: "top top", 
+                        scrub: true 
+                    }
+                }
+            );
+        });
+
+        // High scale network packets
+        // Dynamic stats calculations with two-digit padding
+        const stats = document.querySelectorAll('.num-val');
+        stats.forEach(stat => {
+            const target = parseInt(stat.getAttribute('data-target'), 10);
+            const counterObj = { val: 0 };
+            gsap.to(counterObj, {
+                scrollTrigger: { trigger: stat, start: "top 85%" },
+                val: target,
+                duration: 2.0,
+                ease: "power2.out",
+                onUpdate: () => {
+                    stat.innerHTML = String(Math.round(counterObj.val)).padStart(2, '0');
+                }
+            });
+        });
+
+        // Reveal standard headlines
+        const reveals = document.querySelectorAll('.reveal-text');
+        reveals.forEach(el => {
+            const split = new SplitType(el, { types: 'words, chars' });
+            gsap.from(split.chars, {
+                opacity: 0,
+                y: 40,
+                rotateX: -40,
+                stagger: 0.025,
+                duration: 0.8,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 85%',
+                }
+            });
+        });
+
+        // ----------------------------------------------------
+        // 14. Interactive Case Study Drawer Management
+        // ----------------------------------------------------
+        const caseStudyData = {
+            skillledger: {
+                tag: "Flagship Build · Trust Infrastructure",
+                title: "SkillLedger",
+                subtitle: "Evidence-based technical hiring platform replacing self-reported resume claims with verifiable commit intelligence and sandboxed code execution.",
+                role: "Lead Architect & Full-Stack Engineer",
+                timeline: "2025 — Present",
+                stack: "React, Vite, Tailwind, Monaco Editor, FastAPI, PostgreSQL, Judge0, Docker",
+                problem: "Traditional technical screening relies on keyword-stuffed resumes or abstract puzzle challenges that fail to predict actual software engineering performance. Engineering teams spend countless hours interviewing candidates whose claims do not match their production skills.",
+                solution: "SkillLedger combines deep GitHub repository telemetry with an in-browser code evaluation environment. It parses candidate commit histories, pull requests, and code quality while providing sandboxed, automated code evaluations via Judge0.",
+                architecture: `[Client UI: React + Monaco Editor] 
+      │ (WebSockets / Async REST)
+      ▼
+[FastAPI Backend Engine] ─── (GitHub REST / GraphQL API) ───► [Git Intelligence Analyzer]
+      │
+      ├───► [Judge0 Sandbox: Isolated Docker MicroVMs] ───► [Automated Grading]
+      │
+      ▼
+[PostgreSQL Database (Candidate Profiles & Test Telemetry)]`,
+                decisions: [
+                    "Integrated Microsoft Monaco Editor to supply full IDE-grade editing, autocompletion, and error diagnostic ergonomics.",
+                    "Isolated code execution inside Judge0 micro-containers with strict CPU (1 core max), memory (256MB), and zero-egress network bounds.",
+                    "Constructed asynchronous FastAPI workers to stream live compiler feedback and test case outcomes back to the client interface in real time."
+                ],
+                learning: "Building secure sandboxes requires multi-layered containment. True candidate evaluation emerges from commit habits and engineering patterns rather than algorithmic trivia."
+            },
+            hireflow: {
+                tag: "AI & Backend · Multi-Tenant SaaS",
+                title: "HireFlow AI",
+                subtitle: "Recruitment automation platform utilizing Gemini AI agents for high-throughput JD parsing, semantic resume scoring, and candidate workflow automation.",
+                role: "Backend & AI Systems Engineer",
+                timeline: "2025",
+                stack: "Python, Flask, React, Vite, MongoDB Atlas, Google Gemini API, JWT, bcrypt",
+                problem: "High-volume recruitment generates overwhelming applicant backlogs. HR teams cannot manually review hundreds of multi-page technical dossiers without bias and operational latency.",
+                solution: "Engineered an intelligent screening engine with asynchronous batch evaluation, structured JSON extraction via Gemini, SHA-256 deduplication caching, and strict tenant workspace isolation.",
+                architecture: `[Recruiter Dashboard: React + Vite]
+      │ (JWT / Multi-Tenant Context)
+      ▼
+[Flask Application Services]
+      │
+      ├───► [SHA-256 Cache Check] ──(Hit)──► [Immediate DB Return]
+      │
+      ├───► [Gemini Agent Pipeline] ──(Miss)──► [Async Batch Parsing & Scoring]
+      │
+      ▼
+[MongoDB Atlas (Encrypted Candidate Data & Tenant Collections)]`,
+                decisions: [
+                    "Implemented deterministic SHA-256 payload hashing across identical resume/JD combinations to prevent duplicate LLM API costs and reduce latency.",
+                    "Configured exponential backoff with jitter on LLM API endpoints to gracefully handle rate throttling under heavy batch uploads.",
+                    "Established strict tenant-level isolation via encrypted MongoDB document schemas, ensuring zero data leakage across company boundaries."
+                ],
+                learning: "Enterprise AI implementations depend primarily on cost efficiency, deterministic validation, and rock-solid failure handling rather than raw model capability."
+            },
+            qwerty: {
+                tag: "Multi-Agent Governance · Observability Platform",
+                title: "QWERTY · Synapse OS",
+                subtitle: "Next-generation visibility, orchestration, and governance platform for autonomous multi-agent systems — cracking open the 'black box' of agent swarms.",
+                role: "Full-Stack Platform Engineer",
+                timeline: "2025",
+                stack: "React 18, Vite, Tailwind CSS, Node.js, Express, Socket.io, React Flow, Recharts",
+                problem: "As enterprises scale from single-agent chatbots to complex multi-agent workflows — where agents communicate, negotiate, and delegate tasks autonomously — the biggest barrier to production adoption is the 'black box' problem. Teams have zero visibility into agent decision-making, cost spikes, and cascade failures.",
+                solution: "Built a unified glass-pane observability platform featuring real-time topology mapping via React Flow, n8n and GitHub agent swarm ingestion, granular cost & token tracking, Hallucination Risk Scoring (HRS), and human-in-the-loop governance with approval gates and execution controls.",
+                architecture: `[React 18 SPA: Canvas, Timeline, Command Center]
+      │ (WebSocket / Socket.io)
+      ▼
+[Node.js + Express Backend]
+      │
+      ├───► [n8n Workflow Importer] ──► [Agent Topology Parser]
+      │
+      ├───► [GitHub Repo Ingestion] ──► [Framework Analyzer]
+      │
+      ├───► [Real-Time Telemetry Engine] ──► [HRS Scoring + Alerting]
+      │
+      └───► [HITL Governance: Pause / Resume / Approval Gates]`,
+                decisions: [
+                    "Implemented event-driven WebSocket architecture via Socket.io for sub-second agent telemetry broadcast to Canvas, Timeline, and Command Center views simultaneously.",
+                    "Built a custom SynapseContext + useSwarmSocket hook bridge pattern to decouple backend telemetry streams from UI rendering, enabling hot-swappable visualization panels.",
+                    "Designed the platform as a framework-agnostic observability layer that sits on top of any agent backend (LangChain, AutoGen, CrewAI) without requiring code changes.",
+                    "Engineered proactive alerting for cost spikes, cascade failures, and system safeguard breaches with configurable approval gates for high-risk autonomous operations."
+                ],
+                learning: "The hardest engineering challenge in the AI agent space is not building smarter agents — it is making existing agents accountable, traceable, and safe for enterprise deployment. Observability is the missing infrastructure layer."
+            },
+            synapse: {
+                tag: "Frontend & Product · Production Web",
+                title: "Synapse OS",
+                subtitle: "AI Agent Observability & Interception Platform website built with a high-contrast editorial monochrome design system.",
+                role: "Frontend Engineer",
+                timeline: "2025",
+                stack: "React, Vite, Tailwind CSS, Modern Typography System",
+                problem: "AI developer tooling requires stark, serious, and instant-loading marketing interfaces that convey deep technical precision without distracting corporate fluff.",
+                solution: "Constructed a high-performance web platform featuring responsive typography, comprehensive legal and career portals, and streamlined conversion pathways.",
+                architecture: `[Vite SPA Platform]
+      ├── [Monochrome Design System & Tokens]
+      ├── [Interactive Flow Modals & Careers Funnels]
+      └── [Sub-millisecond Route Transitions & SEO Optimization]`,
+                decisions: [
+                    "Adhered strictly to a pure black-and-white aesthetic with restrained micro-animations.",
+                    "Optimized bundle size and asset loading for instant first-contentful-paint across desktop and mobile devices."
+                ],
+                learning: "Simplicity and typographic discipline often create a far more credible and impactful engineering impression than colorful SaaS cliches."
+            }
+        };
+
+        window.openCaseStudy = function(projectId) {
+            const data = caseStudyData[projectId];
+            if (!data) return;
+
+            const body = document.getElementById('caseStudyBody');
+            const decisionsHtml = data.decisions.map(function(d) { return '<li>' + d + '</li>'; }).join('');
+            body.innerHTML = 
+                '<div class="cs-tag">' + data.tag + '</div>' +
+                '<h2 class="cs-title">' + data.title + '</h2>' +
+                '<p class="cs-subtitle">' + data.subtitle + '</p>' +
+                '<div class="cs-meta-grid">' +
+                    '<div class="cs-meta-item"><div class="meta-k">Role</div><div class="meta-v">' + data.role + '</div></div>' +
+                    '<div class="cs-meta-item"><div class="meta-k">Timeline</div><div class="meta-v">' + data.timeline + '</div></div>' +
+                    '<div class="cs-meta-item"><div class="meta-k">Core Stack</div><div class="meta-v">' + data.stack + '</div></div>' +
+                '</div>' +
+                '<div class="cs-section"><div class="cs-sec-heading">Problem & Context</div><div class="cs-sec-content">' + data.problem + '</div></div>' +
+                '<div class="cs-section"><div class="cs-sec-heading">Engineered Solution</div><div class="cs-sec-content">' + data.solution + '</div></div>' +
+                '<div class="cs-section"><div class="cs-sec-heading">System Architecture Flow</div><pre class="cs-diagram-box"><code>' + data.architecture + '</code></pre></div>' +
+                '<div class="cs-section"><div class="cs-sec-heading">Key Technical Decisions</div><div class="cs-sec-content"><ul>' + decisionsHtml + '</ul></div></div>' +
+                '<div class="cs-section"><div class="cs-sec-heading">Engineering Takeaway</div><div class="cs-sec-content">' + data.learning + '</div></div>' +
+                '<div class="cs-footer-links">' +
+                    '<a href="https://github.com/Sachinva-karma" target="_blank" rel="noopener noreferrer" class="btn-case-study hover-target">View Repository ↗</a>' +
+                    '<button class="btn-secondary-cta hover-target" onclick="closeCaseStudy()">Close Details</button>' +
+                '</div>';
+
+            const modal = document.getElementById('caseStudyModal');
+            modal.classList.add('active');
+            if (window.lenis) {
+                lenis.stop();
+            }
+        };
+
+        window.closeCaseStudy = function() {
+            const modal = document.getElementById('caseStudyModal');
+            modal.classList.remove('active');
+            if (window.lenis) {
+                lenis.start();
+            }
+        };
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeCaseStudy();
+            }
+        });
+
+        // Nudge offset controls to align black and color images perfectly
+        let offsetX = -1.0 / 612.0; // Initial guess: dx = -1px
+        let offsetY = -4.0 / 408.0; // Initial guess: dy = 4px (WebGL inverted)
+        portraitMaterial.uniforms.u_textureBOffset.value.set(offsetX, offsetY);
+
+        window.addEventListener('keydown', (e) => {
+            const step = 1.0 / 612.0; // 1 pixel step size
+            if (e.key === 'ArrowLeft') {
+                offsetX -= step;
+            } else if (e.key === 'ArrowRight') {
+                offsetX += step;
+            } else if (e.key === 'ArrowUp') {
+                offsetY += step;
+            } else if (e.key === 'ArrowDown') {
+                offsetY -= step;
+            } else {
+                return;
+            }
+            portraitMaterial.uniforms.u_textureBOffset.value.set(offsetX, offsetY);
+            console.log(`Texture B Offset: dx = ${(offsetX * 612.0).toFixed(2)}px, dy = ${(-offsetY * 408.0).toFixed(2)}px (offsetX = ${offsetX.toFixed(6)}, offsetY = ${offsetY.toFixed(6)})`);
+        });
+
+    </script>
+</body>
+</html>
